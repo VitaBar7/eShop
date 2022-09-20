@@ -3,30 +3,20 @@
 {% block title %} - Accueil {%endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <nav class="row">
-    <ul>
-        <li><a href="">About</a></li>
-        <li><a href="">Contact</a></li>
-    </ul>
-    </nav>
-    <h1>Wellcome</h1>
-    <section id= "home" class="container">
+<main class="container">
+    <h1>Wellcome to our e-shop</h1>
+    <section id="home" class="container">
         <div class="row">
             {% for ref in references %}
             <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
+                <div class="card" >
                     <img class="card-img-top" src="{{ref.image}}" alt="T-shirt {{ref.slug}}">
                     <div class="card-body">
                         <h2 class="card-title">{{ref.title}}</h2>
-                        <p class="card-text ts6">{{ref.description}}</p>
+                        <p class="card-text ts6">{{ref.description|length>70? ref.description|slice(0,70)~'...': ref.description}}</p>
                         <p class="card-text">Price: $ {{ref.price.amount}}</p>
-                        <a href="{{path('app_shop_show', {'slug' : ref.slug})}}" class="btn btn-primary">it's mine!<a>
+                        <a href="{{path('app_shop_show', {'slug' : ref.slug})}}" class="btn btn-primary">it's mine!</a>
                     </div>
                 </div>
             </div>
@@ -34,5 +24,5 @@
         </div>
     </section>
    
-</div>
+</main>
 {% endblock %}
