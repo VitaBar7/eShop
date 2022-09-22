@@ -39,28 +39,34 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Article[] Returns an array of Article objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Article[] Returns an array of Article objects
+    */
+   public function findByReferenceAndSize($reference, $size): array
+   {
+       return $this->createQueryBuilder('a')
+           ->andWhere('a.reference = :reference')
+           ->andWhere('a.size = :size')
+           ->setParameter('reference', $reference)
+           ->setParameter('size', $size)
+           ->orderBy('a.id', 'ASC')
+        //    ->setMaxResults(10)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
-//    public function findOneBySomeField($value): ?Article
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function findOneByParams($reference, $size, $color): ?Article
+   {
+       return $this->createQueryBuilder('a')
+           ->andWhere('a.reference = :reference')
+           ->andWhere('a.size = :size')
+           ->andWhere('a.color = :color')
+           ->setParameter('reference', $reference)
+           ->setParameter('size', $size)
+           ->setParameter('color', $color)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
 }

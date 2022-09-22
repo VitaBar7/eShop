@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} - Accueil {%endblock %}
+{% block title %} - Article {%endblock %}
 
 {% block body %}
 <style>
@@ -8,32 +8,57 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <nav class="row">
-    <ul>
-        <li><a href="">About</a></li>
-        <li><a href="">Contact</a></li>
-    </ul>
-    </nav>
+<main class="container">
     <h1>Article</h1>
     <section id= "home" class="container">
-        <div class="row">
-            <div class="col-md-3 col-md-12">
-                <div class="card" style="width: 18rem;">
+        <div class="row show">
+            <div class="col-md-12 col-sm-12">
+                <div class="card" style="width: 36rem;">
                     <img class="card-img-top" src="{{reference.image}}" alt="T-shirt {{reference.slug}}">
                     <div class="card-body">
                         <h2 class="card-title">{{reference.title}}</h2>
                         <p class="card-text ts6">{{reference.description}}</p>
+                        <p>Colors:</p>
+                        {# <div class="row"> #}
+                            {% for color in reference.colors %}
+                            <ul>
+                                <li>{{color.name}}</li>
+                            </ul>
+                            {% endfor %}
+                        {# </div> #}
+                    
+                       <form action="{{ path('app_cart_add')}}">
+
+                       <input type="hidden" name="reference_id" value="{{reference.id}}">
+
+                       <select class= "my-2" name="size" id="js-select-size">
+                        <option>Choose your size</option>
+                            {% for size in reference.sizes %}
+                        <option value="{{size.id}}">{{size.name}}</option>
+                        {% endfor %}
+                        </select>
+
+                        <div id="display-colors"></div>
+                        <div>
+                            <label class= "mt-2" for="qty" class="form-label">Quantity</label>
+                            <input type="number" name="qty" class="form-control mb-2" id="qty" value="1"></input>
+                            <button type="submit" id="js-add-to-cart" class="btn btn-sm btn-dark d-none">Add to cart</button>
+                       </form>
+
                         <p class="card-text">Price: $ {{reference.price.amount}}</p>
-                        <a href="#" class="btn btn-primary">it's mine!<a>
+                        <a href="#" class="btn btn-light">🖤<a>
                     </div>
                 </div>
             </div>
             
         </div>
     </section>
-    
-        
-   
-</div>
+</main>
+{% endblock %}
+{% block javascript %}
+<script>
+console.log('Salut from template/shop/show.html.twig');
+const reference_id = JSON.parse('{{ reference.id | json_encode()}}');
+        handleAddToCart(reference_id);
+</script>
 {% endblock %}
