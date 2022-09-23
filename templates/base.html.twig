@@ -20,20 +20,22 @@
     <nav>
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Active</a>
+                <a class="nav-link active" href="{{ path ('app_shop')}}">Shop</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="{{ path ('app_shop')}}">About us</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="{{ path ('app_shop')}}">Contact</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+                <a class="nav-link" href="{{ path ('app_cart')}}">Cart</a>
             </li>
         </ul>
+        <div class="login">
+            <a class="account" href="{{ path ('app_login')}}">login</a>
     </nav>
-        {{dump(app.session.get('cart'))}}
+        
         <div class="container text-center">
             {% for i, messages in app.flashes() %}
             <div class="alert alert-{{ i }} alert-dismissible fade show my-5">

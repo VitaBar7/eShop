@@ -7,12 +7,22 @@ use App\Entity\Color;
 use App\Entity\Price;
 use App\Entity\Reference;
 use App\Entity\Size;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker;
 
 class AppFixtures extends Fixture
 {
+    private UserPasswordHasherInterface $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher = $hasher;
+    }
+
+    
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create();
@@ -36,7 +46,7 @@ class AppFixtures extends Fixture
 
         }
 
-        $prices = ['29', '39', '49'];
+        $prices = ['29', '25', '19'];
         $dataPrices = [];
         for ($i = 0; $i < count($prices); $i++) {
             $price = new Price();
@@ -77,6 +87,22 @@ class AppFixtures extends Fixture
             ->setQty(rand(0,10));
         $dataArticles[] = $article;  
         $manager->persist($article);
+        }
+
+        $admin = new User();
+        $admin->setEmail('admin@admin.com');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $password = $this->hasher->hashPassword($admin, 'password');
+        $admin->setPassword($password);
+        $manager->persist($admin);
+
+        for ($i = 1; $i < 6; $i++) {
+            $user = new User();
+            $user->setEmail('user'.$i.'@user.com');
+            $user->setRoles(['ROLE_USER']);
+            $password = $this->hasher->hashPassword($user, 'password');
+            $user->setPassword($password);
+            $manager->persist($user);
         }
 
         $manager->flush();
