@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
@@ -27,6 +29,14 @@ class Article
 
     #[ORM\Column]
     private ?int $qty = null;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Ticket::class)]
+    private Collection $tickets;
+
+    public function __construct()
+    {
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,6 +87,36 @@ class Article
     public function setQty(int $qty): self
     {
         $this->qty = $qty;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getArticle() === $this) {
+                $ticket->setArticle(null);
+            }
+        }
 
         return $this;
     }

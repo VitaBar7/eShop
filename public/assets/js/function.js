@@ -1,8 +1,10 @@
+
 const handleAddToCart = (reference_id) => {
     const divColors = document.getElementById('display-colors');
         document.getElementById('js-select-size').addEventListener('change', e => {
             divColors.innerHTML = '';
-            axios.post('/api/reference/size/colors', { reference_id : reference_id, size_id : e.target.value })
+            const size = e.target.value;
+            axios.post('/api/reference/size/colors', { reference_id : reference_id, size_id : size })
             .then(response => response.data)
             .then(data => {
 
@@ -30,6 +32,12 @@ const handleAddToCart = (reference_id) => {
 
                 document.getElementById('js-select-color').addEventListener('change', e => {
                     console.log(e.target.value);
+                    axios.post('/api/reference/article-qty'), {reference_id: reference_id, size_id : size, color_id: e.target.value}
+                    .then(response=>response.data)
+                    .then(data => {
+                        document.getElementsById('display-stock').innerText = `Stock disponible: ${data.article_qty}`//completer
+                    });
+                    //new request to get the article and the colors, sizes available
                     document.getElementById('js-add-to-cart').classList.remove('d-none');
                 })
             })

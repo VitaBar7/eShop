@@ -58,6 +58,11 @@ class CartService
         return $total;
     }
 
+    public function clearCart()
+    {
+        $this->requestStack->getSession()->get('cart', []);//check & complete!!
+    }
+
 
 }
 
